@@ -2,6 +2,7 @@
 # Codag cache directory
 .codag-cache/
 
-# Test/dev scripts
-scripts/
+# Test/dev scripts (keep copy-wasm.js which is required for builds)
+scripts/*
+!scripts/copy-wasm.js
 _test_*.ts

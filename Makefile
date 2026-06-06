@@ -9,6 +9,7 @@ setup:
 		echo "Created backend/.env - add your Gemini API key!"; \
 	fi
 	@echo "Setting up frontend..."
+	cd packages/mcp-server && npm install
 	cd frontend && npm install && npm run compile
 	@echo "Setup complete!"
 
