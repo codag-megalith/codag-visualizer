@@ -347,12 +347,12 @@ export function getWorkflow(index: GraphIndex | null, workflowName: string) {
 
     const { graph } = index;
     const nameLower = workflowName.toLowerCase();
-    const wf = graph.workflows.find(
-        (w) =>
-            w.name.toLowerCase() === nameLower ||
-            w.id.toLowerCase() === nameLower ||
-            w.name.toLowerCase().includes(nameLower)
-    );
+    // Exact name or id first, so a workflow is never shadowed by an earlier
+    // one whose name merely contains it.
+    const wf =
+        graph.workflows.find(
+            (w) => w.name.toLowerCase() === nameLower || w.id.toLowerCase() === nameLower
+        ) ?? graph.workflows.find((w) => w.name.toLowerCase().includes(nameLower));
 
     if (!wf) {
         // Don't dump all workflow names for huge graphs
