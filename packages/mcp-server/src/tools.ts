@@ -391,8 +391,12 @@ export function getWorkflow(index: GraphIndex | null, workflowName: string) {
     // If truncated, prioritize LLM and decision nodes, then first N steps
     let nodes = allNodes;
     if (truncated) {
-        const important = allNodes.filter((n) => n!.type === "llm" || n!.type === "decision");
-        const steps = allNodes.filter((n) => n!.type === "step").slice(0, MAX_WORKFLOW_NODES - important.length);
+        const important = allNodes
+            .filter((n) => n!.type === "llm" || n!.type === "decision")
+            .slice(0, MAX_WORKFLOW_NODES);
+        // Math.max: a negative end would make slice keep all but the last few steps.
+        const room = Math.max(0, MAX_WORKFLOW_NODES - important.length);
+        const steps = allNodes.filter((n) => n!.type === "step").slice(0, room);
         nodes = [...important, ...steps];
     }
 
